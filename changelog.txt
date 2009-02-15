@@ -10,3 +10,7 @@ Version 1.1
 - Created new.php
 - Added account creation functionality to new.php and class_account.php
 - Modified manage.php to exit if the accountid specified does not exist
+
+Version 1.2
+- Added functionality to edit.php and class_account.php to edit an account
+- Fixed some indentdation bugs

@@ -18,7 +18,7 @@ require_once('init.php');
 <?php
 foreach ($account->accounts as $accountid => $name)
 {
-	print(increase_indent_level('<option value="' . $accountid . '">' . $name . '</option>' . "\n", 8));
+	print(indent(8) . '<option value="' . $accountid . '">' . $name . '</option>' . "\n");
 }
 ?>
 							</select>
@@ -53,7 +53,7 @@ foreach ($account->accounts as $accountid => $name)
 <?php
 foreach ($contact->contacts as $contactid => $name)
 {
-	print(increase_indent_level('<option value="' . $contactid . '">' . $name . '</option>' . "\n", 13));
+	print(indent(13) . '<option value="' . $contactid . '">' . $name . '</option>' . "\n");
 }
 ?>
 												</select>

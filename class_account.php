@@ -47,6 +47,11 @@ class account
 		return true;
 	}
 
+	function update($contactid, $name, $identifier)
+	{
+		$query = $this->db->query('UPDATE `account` SET `contactid`=\'' . $this->db->escape($contactid) . '\', `name`=\'' . $this->db->escape($name) . '\', `identifier`=\'' . $this->db->escape($identifier) . '\' WHERE `accountid`=\'' . $this->db->escape($this->accountid) . '\' LIMIT 1');
+	}
+
 	function update_contact($contactid)
 	{
 		// TODO: check if contact exists
