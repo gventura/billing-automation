@@ -38,5 +38,19 @@ class account
 		$this->name = $account['name'];
 		$this->identifier = $account['identifier'];
 	}
+
+	function create($contactid, $name, $identifier)
+	{
+		// TODO: check if contact exists
+		$query = $this->db->query('INSERT INTO `account` (`contactid`, `name`, `identifier`) VALUES (\'' . $this->db->escape($contactid) . '\', \'' . $this->db->escape($name). '\', \'' . $this->db->escape($identifier) . '\')');
+
+		return true;
+	}
+
+	function update_contact($contactid)
+	{
+		// TODO: check if contact exists
+		return $this->db->query('UPDATE `account` SET `contactid`=' . $this->db->escape($contactid) . ' WHERE `accountid`=' . $this->accountid . ' LIMIT 1');
+	}
 }
 ?>

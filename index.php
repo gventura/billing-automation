@@ -18,9 +18,7 @@ require_once('init.php');
 <?php
 foreach ($account->accounts as $accountid => $name)
 {
-	print(indent(8));
-	print('<option value="' . $accountid . '">' . $name . '</option>');
-	print("\n");
+	print(increase_indent_level('<option value="' . $accountid . '">' . $name . '</option>' . "\n", 8));
 }
 ?>
 							</select>
@@ -28,8 +26,8 @@ foreach ($account->accounts as $accountid => $name)
 						</div>
 					</fieldset>
 				</form>
-				<form action="create.php" method="post">
-					<input type="hidden" name="do" value="create" />
+				<form action="new.php" method="post">
+					<input type="hidden" name="type" value="account" />
 					<fieldset>
 						<legend>Create an Account</legend>
 						<table cellpadding="2" cellspacing="0" align="center">
@@ -55,9 +53,7 @@ foreach ($account->accounts as $accountid => $name)
 <?php
 foreach ($contact->contacts as $contactid => $name)
 {
-	print(indent(13));
-	print('<option value="' . $contactid . '">' . $name . '</option>');
-	print("\n");
+	print(increase_indent_level('<option value="' . $contactid . '">' . $name . '</option>' . "\n", 13));
 }
 ?>
 												</select>

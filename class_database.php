@@ -39,5 +39,10 @@ class database
 	{
 		return mysql_fetch_assoc($query);
 	}
+
+	function insert_id()
+	{
+		return mysql_insert_id($this->connection);
+	}
 }
 ?>
