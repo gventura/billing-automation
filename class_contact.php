@@ -50,5 +50,16 @@ class contact
 		$this->state = $contact['state'];
 		$this->zip = $contact['zip'];
 	}
+
+	function add($fname, $lname, $email, $phone, $address1, $address2, $city, $state, $zip)
+	{
+		$sql = 'INSERT INTO `contact` (`fname`, `lname`, `email`, `phone`, `address1`, `address2`, `city`, `state`, `zip`) VALUES (\'' . $this->db->escape($fname) . '\', \'' . $this->db->escape($lname) . '\', \'' . $this->db->escape($email) . '\', \'' . $this->db->escape($phone) . '\', \'' . $this->db->escape($address1) . '\', ';
+		(trim($address2) == '') ? $sql .= 'NULL' : $sql .= '\'' . $address2 . '\'' ;
+		$sql .= ', \'' . $city . '\', \'' . $state . '\', \'' . $zip . '\')';
+		$query = $this->db->query($sql);
+		$this->select($this->db->insert_id());
+
+		return true;
+	}
 }
 ?>

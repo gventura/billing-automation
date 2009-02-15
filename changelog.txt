@@ -14,3 +14,10 @@ Version 1.1
 Version 1.2
 - Added functionality to edit.php and class_account.php to edit an account
 - Fixed some indentdation bugs
+
+Version 1.3
+- Added functionality to new.php to add a contact
+- Created save.php
+- Added functionality to save.php to allow saving a new contact
+- Added functionality to class_contact.php to add a new contact
+- Updated database.sql to reflect new and updated database elements
