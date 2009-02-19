@@ -54,10 +54,21 @@ class contact
 	function add($fname, $lname, $email, $phone, $address1, $address2, $city, $state, $zip)
 	{
 		$sql = 'INSERT INTO `contact` (`fname`, `lname`, `email`, `phone`, `address1`, `address2`, `city`, `state`, `zip`) VALUES (\'' . $this->db->escape($fname) . '\', \'' . $this->db->escape($lname) . '\', \'' . $this->db->escape($email) . '\', \'' . $this->db->escape($phone) . '\', \'' . $this->db->escape($address1) . '\', ';
-		(trim($address2) == '') ? $sql .= 'NULL' : $sql .= '\'' . $address2 . '\'' ;
-		$sql .= ', \'' . $city . '\', \'' . $state . '\', \'' . $zip . '\')';
+		(trim($address2) == '') ? $sql .= 'NULL' : $sql .= '\'' . $this->db->escape($address2) . '\'';
+		$sql .= ', \'' . $this->db->escape($city) . '\', \'' . $this->db->escape($state) . '\', \'' . $this->db->escape($zip) . '\')';
 		$query = $this->db->query($sql);
 		$this->select($this->db->insert_id());
+
+		return true;
+	}
+
+	function update($fname, $lname, $email, $phone, $address1, $address2, $city, $state, $zip)
+	{
+		$sql = 'UPDATE `contact` SET `fname` = \'' . $this->db->escape($fname) . '\', `lname` = \'' . $this->db->escape($lname) . '\', `email` = \'' . $this->db->escape($email) . '\', `phone` = \'' . $this->db->escape($phone) . '\', `address1` = \'' . $this->db->escape($address1) . '\', `address2` = ';
+		(trim($address2) == '') ? $sql .= 'NULL' : $sql .= '\'' . $this->db->escape($address2) . '\'';
+		$sql .= ', `city` = \'' . $this->db->escape($city) . '\', `state` = \'' . $this->db->escape($state) . '\', `zip` = \'' . $this->db->escape($zip) . '\' WHERE `contactid` = ' . $this->db->escape($this->contactid) . ' LIMIT 1';
+		$query = $this->db->query($sql);
+		$this->select($this->contactid);
 
 		return true;
 	}

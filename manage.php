@@ -39,7 +39,7 @@ if ($_REQUEST['do'] == 'overview')
 					<fieldset>
 						<legend>Account <input type="submit" value="edit" /></legend>
 						<div align="center">
-							<?php print($account->name); ?> (<?php print($account->identifier); ?>)
+							<strong><?php print($account->name); ?></strong> (<?php print($account->identifier); ?>)
 						</div>
 					</fieldset>
 				</form>
@@ -94,26 +94,34 @@ foreach ($contact->contacts as $contactid => $name)
 }
 else
 {
+	$phone = $contact->phone;
+	$contact->phone = '(' . $phone{0} . $phone{1} . $phone{2} . ') ' . $phone{3} . $phone{4} . $phone{5} . '.' . $phone{6} . $phone{7} . $phone{8} . $phone{9};
+	$mapquery = $contact->address1 . ', ';
+	($contact->address2 == '') ? false : $mapquery .= $contact->address2 . ', ' ;
+	$mapquery .= $contact->city . ', ' . $contact->state . ' ' . $contact->zip;
 ?>
 				<form action="edit.php" method="post">
 					<input type="hidden" name="do" value="contact_edit" />
 					<input type="hidden" name="contactid" value="<?php print($contact->contactid); ?>" />
 					<fieldset>
 						<legend>Contact <input type="submit" value="edit" /></legend>
-						<div align="center">
-							<?php print($contact->fname . ' ' . $contact->lname); ?><br />
-							<?php print($contact->email); ?><br />
-							<?php print($contact->phone); ?><br />
-							<?php print($contact->address1); ?><br />
+						<div>
+							<strong><?php print($contact->fname . ' ' . $contact->lname); ?></strong><br />
+							<a href="http://www.whitepages.com/search/ReversePhone?full_phone=<?php print($contact->phone); ?>" target="_blank" title="Reverse Lookup"><?php print($contact->phone); ?></a><br />
+							<a href="mailto:<?php print($contact->email); ?>"><?php print($contact->email); ?></a><br />
+							<br />
+							<a href="http://maps.google.com/?q=<?php print($mapquery); ?>" target="_blank" title="View Map">
+								<?php print($contact->address1); ?><br />
 <?php
 if ($contact->address2 != '')
 {
 ?>
-							<?php print($contact->address2); ?><br />
+								<?php print($contact->address2); ?><br />
 <?php
 }
 ?>
-							<?php print($contact->city . ', ' . $contact->state . ' ' . $contact->zip . "\n"); ?>
+								<?php print($contact->city . ', ' . $contact->state . ' ' . $contact->zip . "\n"); ?>
+							</a>
 						</div>
 					</fieldset>
 				</form>

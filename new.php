@@ -85,16 +85,16 @@ if (isset($_REQUEST['accountid']))
 								</td>
 							</tr>
 							<tr>
-								<td align="right" valign="top">
-									City:<br />
-									State:<br />
-									ZIP:
-								</td>
-								<td>
-									<input type="text" name="city" /><br />
-									<input type="text" name="state" /><br />
-									<input type="text" name="zip" />
-								</td>
+								<td align="right">City:</td>
+								<td><input type="text" name="city" /></td>
+							</tr>
+							<tr>
+								<td align="right">State:</td>
+								<td><input type="text" name="state" /></td>
+							</tr>
+							<tr>
+								<td align="right">ZIP:</td>
+								<td><input type="text" name="zip" /></td>
 							</tr>
 							<tr>
 								<td colspan="2" align="right">
