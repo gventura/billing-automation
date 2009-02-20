@@ -1,12 +1,12 @@
 <?php
 require_once('init.php');
 
-if (!isset($_REQUEST['do']))
+if (!isset($_REQUEST['what']))
 {
 	header('Location: index.php');
 }
 
-if ($_REQUEST['do'] == 'account_edit')
+if ($_REQUEST['what'] == 'account')
 {
 	$account->select($_REQUEST['accountid']);
 
@@ -24,8 +24,9 @@ if ($_REQUEST['do'] == 'account_edit')
 			<div align="left" style="width: 500px;">
 				<h1 align="center">Edit Account</h1>
 
-				<form action="edit.php" method="post">
-					<input type="hidden" name="do" value="account_update" />
+				<form action="save.php" method="post">
+					<input type="hidden" name="what" value="account" />
+					<input type="hidden" name="type" value="existing" />
 					<input type="hidden" name="accountid" value="<?php print($account->accountid); ?>" />
 					<fieldset>
 						<legend>Information</legend>
@@ -75,38 +76,7 @@ foreach ($contact->contacts as $contactid => $name)
 <?php
 }
 
-if ($_REQUEST['do'] == 'account_update')
-{
-	if (!isset($_REQUEST['accountid']))
-	{
-		header('Location: index.php');
-	}
-
-	$account->select($_REQUEST['accountid']);
-	$account->update($_REQUEST['contactid'], $_REQUEST['name'], $_REQUEST['identifier']);
-
-	header('Location: manage.php?accountid=' . $account->accountid);
-}
-
-if ($_REQUEST['do'] == 'account_update_contactid')
-{
-	switch ($_REQUEST['contact'])
-	{
-		case "new":
-			header('Location: new.php?type=contact&accountid=' . $_REQUEST['accountid']);
-			break;
-		case "existing":
-			$account->select($_REQUEST['accountid']);
-			$account->update_contact($_REQUEST['contactid']);
-			header('Location: manage.php?accountid=' . $_REQUEST['accountid']);
-			break;
-		default:
-			header('Location: manage.php?accountid=' . $_REQUEST['accountid']);
-			return;
-	}
-}
-
-if ($_REQUEST['do'] == 'contact_edit')
+if ($_REQUEST['what'] == 'contact')
 {
 	$contact->select($_REQUEST['contactid']);
 
@@ -115,7 +85,7 @@ if ($_REQUEST['do'] == 'contact_edit')
 		header('Location: index.php');
 	}
 
-	$account->select_by_contact($_REQUEST['contactid']);
+	$account->select($_REQUEST['accountid']);
 ?>
 <html>
 	<head>
@@ -129,6 +99,7 @@ if ($_REQUEST['do'] == 'contact_edit')
 					<input type="hidden" name="what" value="contact" />
 					<input type="hidden" name="type" value="existing" />
 					<input type="hidden" name="contactid" value="<?php print($contact->contactid); ?>" />
+					<input type="hidden" name="accountid" value="<?php print($account->accountid); ?>" />
 					<fieldset>
 						<legend>Contact Details</legend>
 						<table cellpadding="2" cellspacing="0" align="center">

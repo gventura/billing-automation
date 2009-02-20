@@ -1,2 +1,3 @@
-- Modify/merge new.php, edit.php, and save.php to reflect the new "what->type" processing architecture, and to unify command structures
- - Devise a system where each form type can be stored centrally, and displayed on demand, with runtime modifications to the templates
+- Devise a system where each form type can be stored centrally, and displayed on demand, with runtime modifications to the templates
+- Create invoice management system (using unified command structure)
+ - Create line-item management system

@@ -26,8 +26,9 @@ foreach ($account->accounts as $accountid => $name)
 						</div>
 					</fieldset>
 				</form>
-				<form action="new.php" method="post">
-					<input type="hidden" name="type" value="account" />
+				<form action="save.php" method="post">
+					<input type="hidden" name="what" value="account" />
+					<input type="hidden" name="type" value="new" />
 					<fieldset>
 						<legend>Create an Account</legend>
 						<table cellpadding="2" cellspacing="0" align="center">

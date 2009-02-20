@@ -39,13 +39,6 @@ class account
 		$this->identifier = $account['identifier'];
 	}
 
-	function select_by_contact($contactid)
-	{
-		$query = $this->db->query('SELECT `accountid` FROM `account` WHERE `contactid`=' . $this->db->escape($contactid) . ' LIMIT 1');
-		$account = $this->db->fetch_assoc($query);
-		$this->select($account['accountid']);
-	}
-
 	function create($contactid, $name, $identifier)
 	{
 		// TODO: check if contact exists

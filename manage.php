@@ -34,7 +34,7 @@ if ($_REQUEST['do'] == 'overview')
 			<div align="left" style="width: 500px;">
 				<h1 align="center">Account Overview</h1>
 				<form action="edit.php" method="post">
-					<input type="hidden" name="do" value="account_edit" />
+					<input type="hidden" name="what" value="account" />
 					<input type="hidden" name="accountid" value="<?php print($account->accountid); ?>" />
 					<fieldset>
 						<legend>Account <input type="submit" value="edit" /></legend>
@@ -47,8 +47,9 @@ if ($_REQUEST['do'] == 'overview')
 if ($account->contactid == 0)
 {
 ?>
-				<form action="edit.php" method="post">
-					<input type="hidden" name="do" value="account_update_contactid" />
+				<form action="save.php" method="post">
+					<input type="hidden" name="what" value="account" />
+					<input type="hidden" name="type" value="update_contact" />
 					<input type="hidden" name="accountid" value="<?php print($account->accountid); ?>" />
 					<fieldset>
 						<legend>Contact</legend>
@@ -101,8 +102,9 @@ else
 	$mapquery .= $contact->city . ', ' . $contact->state . ' ' . $contact->zip;
 ?>
 				<form action="edit.php" method="post">
-					<input type="hidden" name="do" value="contact_edit" />
+					<input type="hidden" name="what" value="contact" />
 					<input type="hidden" name="contactid" value="<?php print($contact->contactid); ?>" />
+					<input type="hidden" name="accountid" value="<?php print($account->accountid); ?>" />
 					<fieldset>
 						<legend>Contact <input type="submit" value="edit" /></legend>
 						<div>

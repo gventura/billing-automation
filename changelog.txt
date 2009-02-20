@@ -27,3 +27,8 @@ Version 1.4
 - Modified new.php to correctly display the "new contact" form on all clients
 - Fixed a bug in class_contact.php where some elements of a new contact were not being properly escaped before query execution
 - Modified manage.php to change how the account and contact details are displayed
+
+Version 1.5
+- Merged redundant and non-standardized code in new.php, edit.php, and save.php to unify the command structure and processing architecture
+- Updated index.php and manage.php to comply with the corresponding code changes in the processing scripts
+- Removed functionality from class_account.php for selecting an account based on the contactid, since it is incompatible with the management methods

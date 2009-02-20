@@ -6,38 +6,6 @@ if (!isset($_REQUEST['type']))
 	header('Location: index.php');
 }
 
-if ($_REQUEST['type'] == 'account')
-{
-	if (trim($_REQUEST['name']) == '' OR trim($_REQUEST['identifier']) == '')
-	{
-		header('Location: index.php');
-		exit;
-	}
-
-	switch ($_REQUEST['contact'])
-	{
-		case 'new':
-			$_REQUEST['contactid'] = 0;
-			break;
-		case 'existing':
-			break;
-		default:
-			header('Location: index.php');
-			return;
-	}
-
-	$account->create($_REQUEST['contactid'], $_REQUEST['name'], $_REQUEST['identifier']);
-
-	if ($_REQUEST['contact'] == 'new')
-	{
-		header('Location: new.php?type=contact&accountid=' . $database->insert_id());
-	}
-	else
-	{
-		header('Location: manage.php?accountid=' . $database->insert_id());
-	}
-}
-
 if ($_REQUEST['type'] == 'contact')
 {
 ?>
@@ -50,7 +18,8 @@ if ($_REQUEST['type'] == 'contact')
 			<div align="left" style="width: 500px;">
 				<h1 align="center">Create a Contact</h1>
 				<form action="save.php" method="post">
-					<input type="hidden" name="do" value="contact_new" />
+					<input type="hidden" name="what" value="contact" />
+					<input type="hidden" name="type" value="new" />
 <?php
 if (isset($_REQUEST['accountid']))
 {
