@@ -1,3 +1,4 @@
+- Enhanced functionality of class_database.php to cache certain operations and to fall back on those caches when no input is supplied for certain method calls
 - Devise a system where each form type can be stored centrally, and displayed on demand, with runtime modifications to the templates
 - Create invoice management system (using unified command structure)
  - Create line-item management system

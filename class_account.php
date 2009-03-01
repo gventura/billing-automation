@@ -21,9 +21,12 @@ class account
 		$query = $this->db->query('SELECT `accountid`, `name`, `identifier` FROM `account` ORDER BY `name` ASC');
 		$accounts = array();
 
-		while ($account = mysql_fetch_assoc($query))
+		if ($this->db->num_rows($query) != 0)
 		{
-			$accounts[$account['accountid']] = $account['name'] . ' (' . $account['identifier'] . ')';
+			while ($account = mysql_fetch_assoc($query))
+			{
+				$accounts[$account['accountid']] = $account['name'] . ' (' . $account['identifier'] . ')';
+			}
 		}
 
 		$this->accounts = $accounts;
@@ -32,16 +35,34 @@ class account
 	function select($accountid)
 	{
 		$query = $this->db->query('SELECT * FROM `account` WHERE `accountid`=' . $this->db->escape($accountid) . ' LIMIT 1');
-		$account = $this->db->fetch_assoc($query);
-		$this->accountid = $account['accountid'];
-		$this->contactid = $account['contactid'];
-		$this->name = $account['name'];
-		$this->identifier = $account['identifier'];
+
+		if ($this->db->num_rows($query) != 0)
+		{
+			$account = $this->db->fetch_assoc($query);
+
+			foreach ($account as $column => $value)
+			{
+				eval('$this->' . $column . ' = \'' . $value . '\';');
+			}
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	function create($contactid, $name, $identifier)
 	{
-		// TODO: check if contact exists
+		if ($contactid != 0)
+		{
+			if (!$GLOBALS['contact']->exists($contactid))
+			{
+				$contactid = 0;
+			}
+		}
+
 		$query = $this->db->query('INSERT INTO `account` (`contactid`, `name`, `identifier`) VALUES (\'' . $this->db->escape($contactid) . '\', \'' . $this->db->escape($name). '\', \'' . $this->db->escape($identifier) . '\')');
 
 		return true;
@@ -52,10 +73,21 @@ class account
 		$query = $this->db->query('UPDATE `account` SET `contactid`=\'' . $this->db->escape($contactid) . '\', `name`=\'' . $this->db->escape($name) . '\', `identifier`=\'' . $this->db->escape($identifier) . '\' WHERE `accountid`=\'' . $this->db->escape($this->accountid) . '\' LIMIT 1');
 	}
 
-	function update_contact($contactid)
+	function update_contact($contactid, $accountid = 0)
 	{
-		// TODO: check if contact exists
-		return $this->db->query('UPDATE `account` SET `contactid`=' . $this->db->escape($contactid) . ' WHERE `accountid`=' . $this->accountid . ' LIMIT 1');
+		if (!isset($this->accountid) AND $accountid == 0)
+		{
+			return false;
+		}
+
+		if ($GLOBALS['contact']->exists($contactid))
+		{
+			return $this->db->query('UPDATE `account` SET `contactid`=' . $this->db->escape($contactid) . ' WHERE `accountid`=' . $this->accountid . ' LIMIT 1');
+		}
+		else
+		{
+			return false;
+		}
 	}
 }
 ?>

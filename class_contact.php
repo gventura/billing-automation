@@ -39,16 +39,11 @@ class contact
 	{
 		$query = $this->db->query('SELECT * FROM `contact` WHERE `contactid`=' . $this->db->escape($contactid) . ' LIMIT 1');
 		$contact = $this->db->fetch_assoc($query);
-		$this->contactid = $contact['contactid'];
-		$this->fname = $contact['fname'];
-		$this->lname = $contact['lname'];
-		$this->email = $contact['email'];
-		$this->phone = $contact['phone'];
-		$this->address1 = $contact['address1'];
-		$this->address2 = $contact['address2'];
-		$this->city = $contact['city'];
-		$this->state = $contact['state'];
-		$this->zip = $contact['zip'];
+
+		foreach ($contact as $column => $value)
+		{
+			eval('$this->' . $column . ' = \'' . $value . '\';');
+		}
 	}
 
 	function add($fname, $lname, $email, $phone, $address1, $address2, $city, $state, $zip)
@@ -71,6 +66,20 @@ class contact
 		$this->select($this->contactid);
 
 		return true;
+	}
+
+	function exists($contactid)
+	{
+		$query = $this->db->query('SELECT `id` FROM `contact` WHERE `contactid`=' . $this->db->escape($contactid) . ' LIMIT 1');
+
+		if ($this->db->num_rows($query) == 1)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }
 ?>

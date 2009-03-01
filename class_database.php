@@ -35,14 +35,19 @@ class database
 		return mysql_query($sql, $this->connection);
 	}
 
-	function fetch_assoc($query)
+	function fetch_assoc($result)
 	{
-		return mysql_fetch_assoc($query);
+		return mysql_fetch_assoc($result);
 	}
 
 	function insert_id()
 	{
 		return mysql_insert_id($this->connection);
+	}
+
+	function num_rows(&$result)
+	{
+		return mysql_num_rows($result);
 	}
 }
 ?>
