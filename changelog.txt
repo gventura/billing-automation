@@ -40,3 +40,6 @@ Version 1.6
 - Changed the way selecting an account and contact works to make it slightly more efficient and future-proof
 - Added some error checking - all operations are not yet fail-safe, but most critical ones are
 - Changed init.php to use the __autoload function instead of manually loading the different class_*.php files manually - future-proofing
+
+Version 1.6.1
+- Fixed a bug in class_contact.php which caused every contact existence check to fail

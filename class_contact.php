@@ -70,7 +70,7 @@ class contact
 
 	function exists($contactid)
 	{
-		$query = $this->db->query('SELECT `id` FROM `contact` WHERE `contactid`=' . $this->db->escape($contactid) . ' LIMIT 1');
+		$query = $this->db->query('SELECT `contactid` FROM `contact` WHERE `contactid`=' . $this->db->escape($contactid) . ' LIMIT 1');
 
 		if ($this->db->num_rows($query) == 1)
 		{
