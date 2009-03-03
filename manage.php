@@ -1,29 +1,28 @@
 <?php
 require_once('init.php');
 
-if (!isset($_REQUEST['accountid']))
+if (!isset($_REQUEST['what']) OR !isset($_REQUEST['type']))
 {
-	header('Location: index.php');
-}
-
-if (!isset($_REQUEST['do']))
-{
-	$_REQUEST['do'] = 'overview';
-}
-
-if ($_REQUEST['do'] == 'overview')
-{
-	$account->select($_REQUEST['accountid']);
-
-	if ($account->accountid == '')
+	if (isset($_REQUEST['accountid']) AND !empty($_REQUEST['accountid']))
+	{
+		header('Location: manage.php?what=account&type=overview&accountid=' . $_REQUEST['accountid']);
+	}
+	else
 	{
 		header('Location: index.php');
 	}
+}
 
-	if ($account->contactid != 0)
+if ($_REQUEST['what'] == 'account')
+{
+	if ($_REQUEST['type'] == 'overview')
 	{
-		$contact->select($account->contactid);
-	}
+		$account->select($_REQUEST['accountid']);
+
+		if (empty($account->accountid))
+		{
+			header('Location: index.php');
+		}
 ?>
 <html>
 	<head>
@@ -33,18 +32,35 @@ if ($_REQUEST['do'] == 'overview')
 		<div align="center">
 			<div align="left" style="width: 500px;">
 				<h1 align="center">Account Overview</h1>
-				<form action="edit.php" method="post">
+				<form action="manage.php" method="get">
 					<input type="hidden" name="what" value="account" />
-					<input type="hidden" name="accountid" value="<?php print($account->accountid); ?>" />
+					<input type="hidden" name="type" value="overview" />
 					<fieldset>
-						<legend>Account <input type="submit" value="edit" /></legend>
+						<legend>Account [<a href="edit.php?what=account&type=existing&accountid=<?php print($account->accountid); ?>">edit</a>]</legend>
 						<div align="center">
-							<strong><?php print($account->name); ?></strong> (<?php print($account->identifier); ?>)
+							<select name="accountid">
+<?php
+$account->rebuild_cache();
+
+foreach ($account->accounts as $accountid => $name)
+{
+	$print = indent(8) . '<option value="' . $accountid . '"';
+
+	if ($accountid == $account->accountid)
+	{
+		$print .= ' selected="selected"';
+	}
+
+	print($print . '>' . $name . '</option>' . "\n");
+}
+?>
+							</select>
+							<input type="submit" value=" View &raquo; " />
 						</div>
 					</fieldset>
 				</form>
 <?php
-if ($account->contactid == 0)
+if (empty($account->contactid))
 {
 ?>
 				<form action="save.php" method="post">
@@ -55,7 +71,7 @@ if ($account->contactid == 0)
 						<legend>Contact</legend>
 						<table cellpadding="2" cellspacing="0" align="center">
 							<tr>
-								<td colspan="2">There is currently no contact assigned to this account.</td>
+								<td colspan="2"><strong>There is currently no contact assigned to this account.</strong></td>
 							</tr>
 							<tr>
 								<td align="right" valign="top">Options:</td>
@@ -69,6 +85,8 @@ if ($account->contactid == 0)
 											<td>
 												<select name="contactid">
 <?php
+$contact->rebuild_cache();
+
 foreach ($contact->contacts as $contactid => $name)
 {
 	print(increase_indent_level('<option value="' . $contactid . '">' . $name . '</option>' . "\n", 13));
@@ -95,38 +113,30 @@ foreach ($contact->contacts as $contactid => $name)
 }
 else
 {
+	$contact->select($account->contactid);
+
 	$phone = $contact->phone;
-	$contact->phone = '(' . $phone{0} . $phone{1} . $phone{2} . ') ' . $phone{3} . $phone{4} . $phone{5} . '.' . $phone{6} . $phone{7} . $phone{8} . $phone{9};
-	$mapquery = $contact->address1 . ', ';
-	($contact->address2 == '') ? false : $mapquery .= $contact->address2 . ', ' ;
-	$mapquery .= $contact->city . ', ' . $contact->state . ' ' . $contact->zip;
+	$phone_formatted = '(' . $phone{0} . $phone{1} . $phone{2} . ') ' . $phone{3} . $phone{4} . $phone{5} . '.' . $phone{6} . $phone{7} . $phone{8} . $phone{9};
 ?>
-				<form action="edit.php" method="post">
-					<input type="hidden" name="what" value="contact" />
-					<input type="hidden" name="contactid" value="<?php print($contact->contactid); ?>" />
-					<input type="hidden" name="accountid" value="<?php print($account->accountid); ?>" />
-					<fieldset>
-						<legend>Contact <input type="submit" value="edit" /></legend>
-						<div>
-							<strong><?php print($contact->fname . ' ' . $contact->lname); ?></strong><br />
-							<a href="http://www.whitepages.com/search/ReversePhone?full_phone=<?php print($contact->phone); ?>" target="_blank" title="Reverse Lookup"><?php print($contact->phone); ?></a><br />
-							<a href="mailto:<?php print($contact->email); ?>"><?php print($contact->email); ?></a><br />
-							<br />
-							<a href="http://maps.google.com/?q=<?php print($mapquery); ?>" target="_blank" title="View Map">
-								<?php print($contact->address1); ?><br />
+				<fieldset>
+					<legend>Contact [<a href="edit.php?what=contact&type=existing&contactid=<?php print($contact->contactid); ?>&accountid=<?php print($account->accountid); ?>">edit</a>]</legend>
+					<div>
+						<strong><?php print($contact->fname . ' ' . $contact->lname); ?></strong><br />
+						<?php print($phone_formatted); ?><br />
+						<?php print($contact->email); ?><br />
+						<br />
+						<?php print($contact->address1); ?><br />
 <?php
-if ($contact->address2 != '')
+if (!empty($contact->address2))
 {
 ?>
-								<?php print($contact->address2); ?><br />
+						<?php print($contact->address2); ?><br />
 <?php
 }
 ?>
-								<?php print($contact->city . ', ' . $contact->state . ' ' . $contact->zip . "\n"); ?>
-							</a>
-						</div>
-					</fieldset>
-				</form>
+						<?php print($contact->city . ', ' . $contact->state . ' ' . $contact->zip . "\n"); ?>
+					</div>
+				</fieldset>
 <?php
 }
 ?>
@@ -135,5 +145,6 @@ if ($contact->address2 != '')
 	</body>
 </html>
 <?php
+	}
 }
 ?>

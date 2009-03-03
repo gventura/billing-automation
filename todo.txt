@@ -1,4 +1,7 @@
-- Enhanced functionality of class_database.php to cache certain operations and to fall back on those caches when no input is supplied for certain method calls
+- Change rebuild_cache to build_cache across the board, and add a secondary function called rebuild_cache to actually rebuild it - build should also check to see if the cache has already been built, and not rebuild it
+- Add JavaScript to manage certain form components
+- Enhance functionality of class_database.php to cache certain operations and to fall back on those caches when no input is supplied for certain method calls
 - Devise a system where each form type can be stored centrally, and displayed on demand, with runtime modifications to the templates
+ - Add processing code to check for missing form fields and return to the sending form to correct changes
 - Create invoice management system (using unified command structure)
  - Create line-item management system

@@ -1,19 +1,26 @@
 <?php
 require_once('init.php');
 
-if (!isset($_REQUEST['what']))
+if (!isset($_REQUEST['what']) OR !isset($_REQUEST['type']))
 {
 	header('Location: index.php');
 }
 
 if ($_REQUEST['what'] == 'account')
 {
-	$account->select($_REQUEST['accountid']);
-
-	if ($account->accountid == '')
+	if ($_REQUEST['type'] == 'existing')
 	{
-		header('Location: index.php');
-	}
+		if (!isset($_REQUEST['accountid']) OR empty($_REQUEST['accountid']))
+		{
+			header('Location: index.php');
+		}
+
+		$account->select($_REQUEST['accountid']);
+
+		if (empty($account->accountid))
+		{
+			header('Location: index.php');
+		}
 ?>
 <html>
 	<head>
@@ -45,6 +52,8 @@ if ($_REQUEST['what'] == 'account')
 								<td>
 									<select name="contactid">
 <?php
+$contact->rebuild_cache();
+
 foreach ($contact->contacts as $contactid => $name)
 {
 	print(indent(10) . '<option value="' . $contactid . '"');
@@ -61,7 +70,7 @@ foreach ($contact->contacts as $contactid => $name)
 								</td>
 							</tr>
 							<tr>
-								<td><input type="button" value=" Cancel " onclick="javascript:location.href='manage.php?accountid=<?php print($account->accountid); ?>';" /></td>
+								<td><a href="manage.php?what=account&type=overview&accountid=<?php print($account->accountid); ?>">Cancel</a></td>
 								<td align="right"><input type="submit" value=" Save &raquo; " /></td>
 							</tr>
 						</table>
@@ -74,18 +83,29 @@ foreach ($contact->contacts as $contactid => $name)
 	</body>
 </html>
 <?php
+	}
 }
 
-if ($_REQUEST['what'] == 'contact')
+else if ($_REQUEST['what'] == 'contact')
 {
-	$contact->select($_REQUEST['contactid']);
-
-	if ($contact->contactid == '')
+	if ($_REQUEST['type'] == 'existing')
 	{
-		header('Location: index.php');
-	}
+		if (!isset($_REQUEST['contactid']) OR empty($_REQUEST['contactid']))
+		{
+			header('Location: index.php');
+		}
 
-	$account->select($_REQUEST['accountid']);
+		$contact->select($_REQUEST['contactid']);
+
+		if (empty($contact->contactid))
+		{
+			header('Location: index.php');
+		}
+
+		if (isset($_REQUEST['accountid']) AND !empty($_REQUEST['accountid']))
+		{
+			$account->select($_REQUEST['accountid']);
+		}
 ?>
 <html>
 	<head>
@@ -138,7 +158,7 @@ if ($_REQUEST['what'] == 'contact')
 								<td><input type="text" name="zip" value="<?php print($contact->zip); ?>" /></td>
 							</tr>
 							<tr>
-								<td><input type="button" value=" Cancel " onclick="javascript:location.href='manage.php?accountid=<?php print($account->accountid); ?>';" /></td>
+								<td><a href="<?php empty($account->accountid) ? print('index.php') : print('manage.php?what=account&type=overview&accountid=' . $account->accountid) ; ?>">Cancel</a></td>
 								<td align="right"><input type="submit" value=" Save &raquo; " /></td>
 							</tr>
 						</table>
@@ -151,5 +171,6 @@ if ($_REQUEST['what'] == 'contact')
 	</body>
 </html>
 <?php
+	}
 }
 ?>

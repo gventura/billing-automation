@@ -8,12 +8,9 @@ class account
 	public $name;
 	public $identifier;
 
-	function __construct()
+	function __construct(database $database)
 	{
-		global $database;
-
 		$this->db = $database;
-		$this->rebuild_cache();
 	}
 
 	function rebuild_cache()

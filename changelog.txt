@@ -43,3 +43,17 @@ Version 1.6
 
 Version 1.6.1
 - Fixed a bug in class_contact.php which caused every contact existence check to fail
+
+Version 1.7
+- Migrated manage.php to the unified command structure style
+- Streamlined natural selection and error redirection in manage.php
+- Changed the way the database object is passed to the data classes
+- Switched all simple selection types to use GET instead of POST, so the current activity is more obvious
+- Added some missing process splitting elements to edit.php, and the corresponding code in index.php, manage.php, and save.php
+- Changed some error traps to use empty() instead of checking explicit empty values
+- Optimized some error error checking routines
+- Disabled auto-generation of the resource lists to reduce uneccesary database operations
+- Changed any display using forms for legend buttons (like the edit button in manage.php) to use a hyperlink instead
+- Changed cancel buttons on forms to hyperlinks
+- Copied functionality from index.php to manage.php to allow for fast account view switching
+- Removed all the data links from the contact part of an account in manage.php

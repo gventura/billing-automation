@@ -9,13 +9,16 @@ require_once('init.php');
 		<div align="center">
 			<div align="left" style="width: 500px;">
 				<h1 align="center">Management Center</h1>
-				<form action="manage.php" method="post">
-					<input type="hidden" name="do" value="overview" />
+				<form action="manage.php" method="get">
+					<input type="hidden" name="what" value="account" />
+					<input type="hidden" name="type" value="overview" />
 					<fieldset>
 						<legend>Manage an Account</legend>
 						<div align="center">
 							<select name="accountid">
 <?php
+$account->rebuild_cache();
+
 foreach ($account->accounts as $accountid => $name)
 {
 	print(indent(8) . '<option value="' . $accountid . '">' . $name . '</option>' . "\n");
@@ -52,6 +55,8 @@ foreach ($account->accounts as $accountid => $name)
 											<td>
 												<select name="contactid">
 <?php
+$contact->rebuild_cache();
+
 foreach ($contact->contacts as $contactid => $name)
 {
 	print(indent(13) . '<option value="' . $contactid . '">' . $name . '</option>' . "\n");

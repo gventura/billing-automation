@@ -14,12 +14,9 @@ class contact
 	public $state;
 	public $zip;
 
-	function __construct()
+	function __construct(database $database)
 	{
-		global $database;
-
 		$this->db = $database;
-		$this->rebuild_cache();
 	}
 
 	function rebuild_cache()
